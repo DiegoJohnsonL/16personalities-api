@@ -9,7 +9,7 @@ const envSchema = z
 
     PORT: z.coerce
       .number()
-      .default(5000)
+      .default(3000)
       .describe("Port number for the server"),
 
     // Proxy configuration with defaults
