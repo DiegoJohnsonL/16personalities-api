@@ -7,12 +7,36 @@ const envSchema = z
       .enum(["development", "production", "staging", "test"])
       .default("development"),
 
-    PORT: z.coerce.number().default(5000),
-    USE_PROXY: z.enum(["true", "false"]).transform((v) => v === "true"),
-    PROXY_HOST: z.string().optional(),
-    PROXY_PORT: z.coerce.number().optional(),
-    PROXY_USERNAME: z.string().optional(),
-    PROXY_PASSWORD: z.string().optional(),
+    PORT: z.coerce
+      .number()
+      .default(5000)
+      .describe("Port number for the server"),
+
+    // Proxy configuration with defaults
+    USE_PROXY: z
+      .enum(["true", "false"])
+      .default("false")
+      .transform((v) => v === "true"),
+      
+    PROXY_HOST: z
+      .string()
+      .default("")
+      .transform((v) => v || undefined),
+      
+    PROXY_PORT: z.coerce
+      .number()
+      .default(0)
+      .transform((v) => v || undefined),
+      
+    PROXY_USERNAME: z
+      .string()
+      .default("")
+      .transform((v) => v || undefined),
+      
+    PROXY_PASSWORD: z
+      .string()
+      .default("")
+      .transform((v) => v || undefined),
   })
   .superRefine((data, ctx) => {
     if (data.USE_PROXY) {
